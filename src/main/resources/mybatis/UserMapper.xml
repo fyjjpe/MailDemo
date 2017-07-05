@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.UserDao">
+
+    <resultMap type="User" id="standardUserMap">
+        <id property="uid" column="uid" javaType="Integer" jdbcType="INTEGER"/>
+        <result property="username" column="username" javaType="String" jdbcType="VARCHAR"/>
+        <result property="password" column="password" javaType="String" jdbcType="VARCHAR"/>
+        <result property="nickname" column="nickname" javaType="String" jdbcType="VARCHAR"/>
+        <result property="email" column="email" javaType="String" jdbcType="VARCHAR"/>
+        <result property="state" column="state" javaType="Integer" jdbcType="INTEGER"/>
+        <result property="code" column="code" javaType="String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="complete_columns">
+		uid,username,password,nickname,email,state,code
+	</sql>
+
+    <insert id="regist" parameterType="User">
+		insert into user (username,password,nickname,email,state,code) VALUES (#{username},#{password},#{nickname},#{email},#{state},#{code})
+	</insert>
+
+    <select id="findUserByCode" resultMap="standardUserMap" parameterType="string">
+        SELECT <include refid="complete_columns"/> FROM user WHERE code=#{code};
+    </select>
+    
+    <update id="updateUser" parameterType="User">
+        UPDATE user set password=#{password},nickname=#{nickname},email=#{email},state=#{state} where code=#{code}
+    </update>
+
+
+</mapper>
